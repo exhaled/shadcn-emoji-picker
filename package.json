@@ -27,6 +27,9 @@
 		"./package.json": "./package.json",
 		".": {
 			"import": "./dist/index.js"
+		},
+		"./dist/index.css": {
+			"import": "./dist/index.css"
 		}
 	},
 	"scripts": {
@@ -62,9 +65,9 @@
 		"zustand": "^5.0.1"
 	},
 	"peerDependencies": {
-		"react": "^16.8 || ^17 || ^18",
-		"react-dom": "^16.8 || ^17 || ^18",
-		"zustand": "^4 || ^5",
-		"emoogle-emoji-search-engine": "^1"
+		"react": ">=17",
+		"react-dom": ">=17",
+		"zustand": ">=4",
+		"emoogle-emoji-search-engine": ">=1"
 	}
 }
