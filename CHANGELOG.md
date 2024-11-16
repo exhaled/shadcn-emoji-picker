@@ -1,5 +1,11 @@
 # emoogle-emoji-picker
 
+## 1.0.2
+
+### Patch Changes
+
+- df6b9f9: Update README installation
+
 ## 1.0.1
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
 	"name": "emoogle-emoji-picker",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "The emoji picker React component created and used by Emoogle, the best emoji desktop app for emoji fans.",
 	"keywords": [
 		"emoji",
