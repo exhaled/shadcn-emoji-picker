@@ -1,5 +1,11 @@
 # emoogle-emoji-picker
 
+## 1.0.1
+
+### Patch Changes
+
+- 3f2cae4: Fix jsx build and css export issues
+
 ## 1.0.0
 
 ### Major Changes
