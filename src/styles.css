@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+Emoji Picker Width (298px)
+- 8 Emojis: 8 * 32px = 256px
+- Padding: 2 * 16px = 32px
+- Scrollbar: 10px
+
+Scroll Pane Height (220px)
+- Title: 28px (GROUP_TITLE_HEIGHT)
+- 6 Emojis: 6 * 32px = 192px
+*/
+
+:root {
+	--emoji-picker-padding: 16px;
+	--emoji-picker-width: 298px;
+	--emoji-scroll-pane-max-height: 220px;
+}
+
+@keyframes blink {
+	from,
+	to {
+		color: transparent;
+	}
+	50% {
+		color: currentColor;
+	}
+}
+
+@layer components {
+	.bg-white-ld {
+		@apply bg-white dark:bg-gray-900;
+	}
+
+	.bg-white_95-ld {
+		@apply bg-white/95 dark:bg-gray-900/95;
+	}
+
+	.bg-gray-200-ld {
+		@apply bg-gray-200 dark:bg-gray-700;
+	}
+
+	.border-ld {
+		@apply border dark:border-white/10;
+	}
+
+	.border-t-ld {
+		@apply border-t dark:border-t-white/10;
+	}
+
+	.border-b-ld {
+		@apply border-b dark:border-b-white/10;
+	}
+
+	.text-gray-400-ld {
+		@apply text-gray-400 dark:text-gray-500;
+	}
+
+	.text-gray-500-ld {
+		@apply text-gray-500 dark:text-gray-400;
+	}
+
+	.text-gray-600-ld {
+		@apply text-gray-600 dark:text-gray-300;
+	}
+
+	.text-gray-700-ld {
+		@apply text-gray-700 dark:text-gray-200;
+	}
+
+	.ring-sky-300-ld {
+		@apply ring-sky-300 dark:ring-sky-600;
+	}
+
+	.scrollbar-thumb-gray-200-ld {
+		@apply scrollbar-thumb-gray-200 dark:scrollbar-thumb-gray-700;
+	}
+
+	.scrollbar-track-gray-100-ld {
+		@apply scrollbar-track-gray-100 dark:scrollbar-track-gray-800;
+	}
+}

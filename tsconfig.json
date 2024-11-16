@@ -1,0 +1,11 @@
+{
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"resolveJsonModule": true,
+		"module": "Preserve",
+		"lib": ["es2022", "dom", "dom.iterable"],
+		"noEmit": true,
+		"jsx": "preserve"
+	}
+}
