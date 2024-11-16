@@ -30,7 +30,7 @@ Demo link: [emoogle.org/emoji-search](https://www.emoogle.org/emoji-search)
 ## 📦Installation
 
 ```bash
-npm install emoogle-emoji-picker emoogle-emoji-search-engine zustand
+npm install emoogle-emoji-picker
 ```
 
 ## 📖Usage
