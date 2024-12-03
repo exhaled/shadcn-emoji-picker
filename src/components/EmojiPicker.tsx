@@ -1,5 +1,4 @@
 'use client';
-import { useState, useEffect } from 'react';
 import '../styles.css';
 import type { EmojiPickerProps } from '../lib/store/store';
 
@@ -8,7 +7,6 @@ import { GroupsNavBar } from './GroupsNavBar';
 import { SearchBar } from './SearchBar';
 import { ScrollPane } from './scroll-pane/ScrollPane';
 
-import { cx } from '../lib/cx';
 import { useEmojiPickerSelector } from '../lib/store/hooks';
 import { useEmojiPickerKeyDownProps } from '../lib/hooks/useEmojiPickerKeyDownProps';
 
@@ -25,7 +23,6 @@ export const EmojiPicker = (props: React.PropsWithoutRef<EmojiPickerProps>) => {
 };
 
 const EmojiPickerCore = () => {
-	const darkMode = useEmojiPickerSelector((state) => state.darkMode);
 	const onBlur = useEmojiPickerSelector((state) => state.onBlur);
 	const resetEmojiPickerState = useEmojiPickerSelector(
 		(state) => state.resetEmojiPickerState
@@ -41,7 +38,6 @@ const EmojiPickerCore = () => {
 					addKeyDownEventListener();
 				}}
 				onBlur={(event) => {
-					// Trigger onBlur only when focus is outside of EmojiPicker so it is okay to click inside EmojiPicker
 					if (!event.currentTarget.contains(event.relatedTarget)) {
 						removeKeyDownEventListener();
 						if (onBlur) {

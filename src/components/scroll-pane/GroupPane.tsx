@@ -1,5 +1,8 @@
 import { memo } from 'react';
-import { useEmojiPickerSelector, useEmojiPickerStore } from '../../lib/store/hooks';
+import {
+	useEmojiPickerSelector,
+	useEmojiPickerStore,
+} from '../../lib/store/hooks';
 import { getEmojiWithVariant } from '../../lib/emoji-variants';
 import { NUM_EMOJIS_PER_ROW } from '../../lib/constants';
 import { EmojiButton } from './EmojiButton';
@@ -17,21 +20,29 @@ interface GroupPaneProps {
 	children?: React.ReactNode;
 }
 
-const GroupPaneCore = ({ group, emojis, selectedEmoji, children }: GroupPaneProps) => {
+const GroupPaneCore = ({
+	group,
+	emojis,
+	selectedEmoji,
+	children,
+}: GroupPaneProps) => {
 	const skinTone = useEmojiPickerSelector((state) => state.skinTone);
 	const { getEmojiPickerStore, setEmojiPickerStore } = useEmojiPickerStore();
 
 	return (
 		<section>
 			{children}
+
 			<ul className="grid grid-cols-[repeat(8,32px)] gap-0">
 				{emojis.map((baseEmoji, idx) => {
 					const emojiWithVariant = getEmojiWithVariant(baseEmoji, skinTone);
-					const isSelected = group === selectedEmoji?.group && idx === selectedEmoji?.idx;
+					const isSelected =
+						group === selectedEmoji?.group && idx === selectedEmoji?.idx;
 
 					const isFirstInRow = idx % NUM_EMOJIS_PER_ROW === 0;
 					const rowNum = Math.floor(idx / NUM_EMOJIS_PER_ROW) + 1;
-					const labelOffsetClassName = rowNum >= 10 ? 'before:-left-[14px]' : 'before:-left-[10px]';
+					const labelOffsetClassName =
+						rowNum >= 10 ? 'before:-left-[14px]' : 'before:-left-[10px]';
 
 					return (
 						<li
@@ -47,7 +58,8 @@ const GroupPaneCore = ({ group, emojis, selectedEmoji, children }: GroupPaneProp
 								emoji={emojiWithVariant}
 								isSelected={isSelected}
 								onClick={() => {
-									const handleEmojiSelect = getEmojiPickerStore().handleEmojiSelect;
+									const handleEmojiSelect =
+										getEmojiPickerStore().handleEmojiSelect;
 									handleEmojiSelect(emojiWithVariant, baseEmoji, group);
 								}}
 								onMouseEnter={() => {

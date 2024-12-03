@@ -2,8 +2,10 @@ import { Icons } from './group-icons/Icons';
 
 import type { NavBarGroup } from '../lib/types';
 import { cx } from '../lib/cx';
-import { GROUP_TO_GROUP_ID } from './scroll-pane/group-pane-utils';
-import { useEmojiPickerSelector, useEmojiPickerStore } from '../lib/store/hooks';
+import {
+	useEmojiPickerSelector,
+	useEmojiPickerStore,
+} from '../lib/store/hooks';
 import { CustomGroup } from '../lib/constants';
 
 // Note: The order of the mapping matters here as it is the order of the group icons
@@ -43,10 +45,10 @@ export const GroupsNavBar = () => {
 								!isSelected && group === 'Flags' && 'hover:opacity-90'
 							)}
 							onMouseDown={() => {
-								setEmojiPickerStore({ 
+								setEmojiPickerStore({
 									selectedGroup: group as NavBarGroup,
 									searchInput: '',
-									searchEmojisResults: []
+									searchEmojisResults: [],
 								});
 							}}
 						>

@@ -40,18 +40,6 @@ export const ScrollPane = () => {
 		);
 	}
 
-	// When there's no search and no selected group, show the prompt
-	if (!selectedGroup) {
-		return (
-			<section
-				ref={scrollPaneRef}
-				className="overflow-y-scroll overflow-x-hidden snap-y scrollbar-thin scrollbar-thumb-gray-200-ld scrollbar-track-gray-100-ld scrollbar-thumb-rounded-md px-[var(--emoji-picker-padding)] max-h-[var(--emoji-scroll-pane-max-height)] relative pb-2 flex items-center justify-center"
-			>
-				<p className="text-gray-600-ld text-sm">Select a category to view emojis</p>
-			</section>
-		);
-	}
-
 	// Show selected category emojis
 	return (
 		<section
