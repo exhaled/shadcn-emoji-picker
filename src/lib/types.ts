@@ -9,9 +9,8 @@ type GroupToBaseEmojis = typeof GROUP_TO_BASE_EMOJIS;
 export type DataGroup = keyof GroupToBaseEmojis;
 
 export type Group = CustomGroup | DataGroup;
-// Nav bar uses and shares the same icon for Search Results and Frequently Used
-// so we exclude Frequently Used from NavBarGroup to avoid duplication
-export type NavBarGroup = Exclude<Group, CustomGroup.FrequentlyUsed>;
+// Nav bar excludes Search Results since it's only used for search functionality
+export type NavBarGroup = Exclude<Group, CustomGroup.SearchResults>;
 
 export type BaseEmojiWithSkinToneVariants =
 	keyof typeof EMOJI_TO_SKIN_TONE_VARIANTS;

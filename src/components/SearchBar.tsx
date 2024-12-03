@@ -13,6 +13,7 @@ import {
 import { CustomGroup } from '../lib/constants';
 import { EMOJI_KEYWORDS, searchEmojis } from 'emoogle-emoji-search-engine';
 import { sortKeywordsInPlace } from '../lib/sort-keywords';
+import { useSearchBarKeyboardFocus } from '../lib/hooks/useSearchBarKeyboardFocus';
 
 const INPUT_SHARED_CLASS_NAMES = 'px-2 py-1 tracking-tight';
 
@@ -39,6 +40,9 @@ export const SearchBar = () => {
 
 	const inputRef = useRef<HTMLInputElement>(null);
 	const autoFocus = useEmojiPickerSelector((state) => state.autoFocus);
+
+	useSearchBarKeyboardFocus(inputRef);
+
 	// In StrictMode, useEffect is called twice and causes the key down event listener
 	// set up in useEmojiPickerKeyDownProps to be removed. So we have to set focus
 	// with an useEffect by first blurring then focusing, instead of passing autoFocus

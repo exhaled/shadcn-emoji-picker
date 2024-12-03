@@ -1,11 +1,11 @@
-import { createContext, useEffect, useRef } from 'react';
+import { createContext, useEffect, useRef, useContext } from 'react';
 import {
 	createEmojiPickerStore,
 	type EmojiPickerProps,
 	type EmojiPickerZustandStore,
 } from './store';
 
-export const StoreContext = createContext<EmojiPickerZustandStore | null>(null);
+const StoreContext = createContext<EmojiPickerZustandStore | null>(null);
 
 /**
  * EmojiPickerStoreProvider is a ContextProvider that allows all the children components
@@ -27,4 +27,13 @@ export const EmojiPickerStoreProvider = ({
 	return (
 		<StoreContext.Provider value={store}>{children}</StoreContext.Provider>
 	);
+};
+
+// Export context through a hook instead of directly
+export const useStoreContext = () => {
+	const context = useContext(StoreContext);
+	if (context === null) {
+		throw new Error('useStoreContext must be used within a StoreProvider');
+	}
+	return context;
 };

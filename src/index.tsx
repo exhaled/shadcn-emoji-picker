@@ -1,4 +1,5 @@
 export { EmojiPicker } from './components/EmojiPicker';
+export { ToggleableEmojiPicker } from './components/ToggleableEmojiPicker';
 export {
 	GROUP_TO_BASE_EMOJIS,
 	EMOJI_TO_SKIN_TONE_VARIANTS,

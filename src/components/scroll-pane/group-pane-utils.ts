@@ -4,7 +4,7 @@ export const GROUP_TO_GROUP_ID: Record<Group, number> = {
 	'Search Results': 0,
 	'Frequently Used': 0,
 	'Smileys & Emotion': 1,
-	'People & Body': 2,
+	// 'People & Body': 2,
 	'Animals & Nature': 3,
 	'Food & Drink': 4,
 	'Travel & Places': 5,

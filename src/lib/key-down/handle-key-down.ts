@@ -8,7 +8,7 @@ import { getEmojiWithVariant } from '../emoji-variants';
  * handleKeyDown handles 5 keydown events (4 arrows, enter).
  *
  * For arrow keys, it computes and updates the next selected emoji.
- * For enter key, it calls the onEmojiClick callback.
+ * For enter key, it calls handleEmojiSelect.
  */
 export const handleKeyDown = (
 	key: Key,
@@ -42,28 +42,11 @@ export const handleKeyDown = (
 	} else if (key === Key.Enter) {
 		const selectedEmoji = getEmojiPickerStore().selectedEmoji;
 		if (selectedEmoji) {
-			const handleEnterKeyDown = getEmojiPickerStore().onEmojiClick;
-			if (handleEnterKeyDown) {
-				const baseEmoji = selectedEmoji.emoji;
-				const skinTone = getEmojiPickerStore().skinTone;
-				const emojiToSpecialVariant =
-					getEmojiPickerStore().emojiToSpecialVariant;
-				const emojiWithVariant = getEmojiWithVariant(
-					baseEmoji,
-					skinTone,
-					emojiToSpecialVariant
-				);
-				const resetEmojiPickerState =
-					getEmojiPickerStore().resetEmojiPickerState;
-				const searchInput = getEmojiPickerStore().searchInput;
-				handleEnterKeyDown(
-					emojiWithVariant,
-					resetEmojiPickerState,
-					baseEmoji,
-					selectedEmoji.group,
-					searchInput
-				);
-			}
+			const baseEmoji = selectedEmoji.emoji;
+			const skinTone = getEmojiPickerStore().skinTone;
+			const emojiWithVariant = getEmojiWithVariant(baseEmoji, skinTone);
+			const handleEmojiSelect = getEmojiPickerStore().handleEmojiSelect;
+			handleEmojiSelect(emojiWithVariant, baseEmoji, selectedEmoji.group);
 		}
 	}
 };

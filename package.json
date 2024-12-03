@@ -65,9 +65,13 @@
 		"zustand": "^5.0.1"
 	},
 	"peerDependencies": {
+		"emoogle-emoji-search-engine": ">=1",
 		"react": ">=17",
 		"react-dom": ">=17",
-		"zustand": ">=4",
-		"emoogle-emoji-search-engine": ">=1"
+		"zustand": ">=4"
+	},
+	"dependencies": {
+		"@radix-ui/react-dropdown-menu": "^2.1.2",
+		"usehooks-ts": "^3.1.0"
 	}
 }
