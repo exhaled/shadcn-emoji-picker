@@ -27,18 +27,14 @@ export const EmojiPicker = (props: React.PropsWithoutRef<EmojiPickerProps>) => {
 const EmojiPickerCore = () => {
 	const darkMode = useEmojiPickerSelector((state) => state.darkMode);
 	const onBlur = useEmojiPickerSelector((state) => state.onBlur);
-	const resetEmojiPickerState = useEmojiPickerSelector((state) => state.resetEmojiPickerState);
-	const [darkModeSystemPreference, setDarkModeSystemPreference] = useState(false);
-	const { addKeyDownEventListener, removeKeyDownEventListener } = useEmojiPickerKeyDownProps();
-
-	useEffect(() => {
-		setDarkModeSystemPreference(
-			Boolean(window?.matchMedia('(prefers-color-scheme: dark)')?.matches)
-		);
-	}, []);
+	const resetEmojiPickerState = useEmojiPickerSelector(
+		(state) => state.resetEmojiPickerState
+	);
+	const { addKeyDownEventListener, removeKeyDownEventListener } =
+		useEmojiPickerKeyDownProps();
 
 	return (
-		<div className={(darkMode ?? darkModeSystemPreference) ? 'dark' : undefined}>
+		<div className={'dark'}>
 			<article
 				tabIndex={-1}
 				onFocus={() => {
@@ -53,7 +49,7 @@ const EmojiPickerCore = () => {
 						}
 					}
 				}}
-				className="rounded-lg w-[var(--emoji-picker-width)] bg-white-ld border outline-none"
+				className="rounded-lg w-[var(--emoji-picker-width)] bg-white-ld outline-none border border-gray-700"
 			>
 				<GroupsNavBar />
 				<SearchBar />

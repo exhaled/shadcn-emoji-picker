@@ -29,7 +29,13 @@ export const ScrollPane = () => {
 					emojis={searchEmojisResults}
 					selectedEmoji={selectedEmoji}
 					memo={false}
-				/>
+				>
+					{searchEmojisResults.length === 0 && (
+						<div className="text-xs text-gray-700-ld tracking-tight select-none mr-[var(--emoji-picker-padding)] py-2">
+							<div>No emojis found for '{searchInput}'</div>
+						</div>
+					)}
+				</GroupPane>
 			</section>
 		);
 	}

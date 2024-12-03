@@ -25,9 +25,6 @@ const Playground = () => {
 	return (
 		<div className="flex flex-col items-center py-12 px-4 md:px-12">
 			<div className="max-w-[380px] text-gray-600 text-sm">
-				<p>👋 Welcome to the Emoogle emoji picker playground</p>
-				<p>🎯 Click the button to open the emoji picker</p>
-				<p>🎨 Try different positions and alignments below</p>
 				{lastEmoji && <p>Last selected emoji: {lastEmoji}</p>}
 			</div>
 
@@ -49,7 +46,7 @@ const Playground = () => {
 					))}
 				</div>
 
-				<div className="relative w-[500px] h-[300px] flex items-center justify-center border rounded-lg">
+				<div className="relative w-[500px] h-[300px] flex items-center justify-center border border-gray-700 rounded-lg bg-gray-900">
 					<ToggleableEmojiPicker
 						side={position.side}
 						align={position.align}

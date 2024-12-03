@@ -47,7 +47,6 @@ const GroupPaneCore = ({ group, emojis, selectedEmoji, children }: GroupPaneProp
 								emoji={emojiWithVariant}
 								isSelected={isSelected}
 								onClick={() => {
-									const searchInput = getEmojiPickerStore().searchInput;
 									const handleEmojiSelect = getEmojiPickerStore().handleEmojiSelect;
 									handleEmojiSelect(emojiWithVariant, baseEmoji, group);
 								}}

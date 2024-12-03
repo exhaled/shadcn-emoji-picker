@@ -26,7 +26,7 @@ export const ToggleableEmojiPicker = ({
         <button
           type="button"
           className={cx(
-            'p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors',
+            'p-2 rounded-lg bg-white transition-colors',
             buttonClassName
           )}
         >

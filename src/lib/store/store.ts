@@ -95,7 +95,7 @@ export const createEmojiPickerStore = (props: EmojiPickerProps) => {
 					frequentlyUsedEmojis: [
 						emoji,
 						...state.frequentlyUsedEmojis.filter((e) => e !== emoji)
-					].slice(0, 20)
+					].slice(0, 16)
 				})),
 				
 				addSearchedInput: (input) => set((state) => ({
@@ -119,9 +119,6 @@ export const createEmojiPickerStore = (props: EmojiPickerProps) => {
 					const state = get();
 					const { searchInput, onEmojiSelect } = state;
 
-					// Copy to clipboard by default
-					navigator.clipboard.writeText(emojiVariant);
-
 					// Update recently searched input and custom keyword most relevant emoji
 					if (searchInput) {
 						set((state) => ({
@@ -141,7 +138,7 @@ export const createEmojiPickerStore = (props: EmojiPickerProps) => {
 						frequentlyUsedEmojis: [
 							baseEmoji,
 							...state.frequentlyUsedEmojis.filter((e) => e !== baseEmoji)
-						].slice(0, 20)
+						].slice(0, 16)
 					}));
 
 					// Update custom keywords

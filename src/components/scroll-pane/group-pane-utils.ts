@@ -4,14 +4,13 @@ export const GROUP_TO_GROUP_ID: Record<Group, number> = {
 	'Search Results': 0,
 	'Frequently Used': 0,
 	'Smileys & Emotion': 1,
-	// 'People & Body': 2,
-	'Animals & Nature': 3,
-	'Food & Drink': 4,
-	'Travel & Places': 5,
-	Activities: 6,
-	Objects: 7,
+	'Animals & Nature': 2,
+	'Food & Drink': 3,
+	'Travel & Places': 4,
+	Activities: 5,
+	Objects: 6,
 	Symbols: 8,
-	Flags: 9,
+	Flags: 8,
 };
 
 export const GROUP_PANE_SECTION_DATA_ATTR = 'data-group-pane-section-id';
