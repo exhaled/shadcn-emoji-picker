@@ -21,7 +21,7 @@ const INPUT_SHARED_CLASS_NAMES = 'px-2 py-1 tracking-tight';
  * SearchBar renders the search input field and updates search emoji results
  * and auto complete suggestions based on user input.
  */
-export const SearchBar = () => {
+export const SearchBarOld = () => {
 	const searchInput = useEmojiPickerSelector((state) => state.searchInput);
 	const selectedEmoji = useEmojiPickerSelector((state) => state.selectedEmoji);
 	const { getEmojiPickerStore, setEmojiPickerStore } = useEmojiPickerStore();

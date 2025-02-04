@@ -15,7 +15,6 @@ export type OnEscapeKeyDown = () => void;
 export interface EmojiPickerProps {
 	onEmojiSelect?: OnEmojiSelect;
 	onEscapeKeyDown?: OnEscapeKeyDown;
-	darkMode?: boolean;
 	autoFocus?: boolean;
 	simulateSearchInputFocus?: boolean;
 }
@@ -56,7 +55,7 @@ const RESET_STATE = {
 	selectedEmoji: undefined,
 };
 
-const MAX_FREQUENTLY_USED = 16;
+const MAX_FREQUENTLY_USED = 18;
 const MAX_RECENT_SEARCHES = 10;
 
 // Utility functions for state updates
@@ -89,7 +88,6 @@ interface StoreActions {
 }
 
 export interface EmojiPickerStore extends InternalState, StoreActions {
-	darkMode?: boolean;
 	onEmojiSelect?: OnEmojiSelect;
 	onEscapeKeyDown?: OnEscapeKeyDown;
 	onBlur?: (resetState: () => void) => void;

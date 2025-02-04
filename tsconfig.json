@@ -6,6 +6,10 @@
 		"module": "Preserve",
 		"lib": ["es2022", "dom", "dom.iterable"],
 		"noEmit": true,
-		"jsx": "react-jsx"
+		"jsx": "react-jsx",
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
 	}
 }

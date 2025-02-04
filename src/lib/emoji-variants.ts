@@ -8,13 +8,6 @@ import { type EmojiToSpecialVariant } from './types';
  * 2. Preview
  * 3. handle-key-down.ts
  */
-export const getEmojiWithVariant = (
-	baseEmoji: string,
-	emojiToSpecialVariant?: EmojiToSpecialVariant
-) => {
-	if (emojiToSpecialVariant && baseEmoji in emojiToSpecialVariant) {
-		return emojiToSpecialVariant[baseEmoji];
-	}
-
+export const getEmojiWithVariant = (baseEmoji: string) => {
 	return baseEmoji;
 };

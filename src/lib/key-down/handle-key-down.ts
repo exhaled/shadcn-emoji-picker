@@ -2,7 +2,6 @@ import type { GetEmojiPickerStore, SetEmojiPickerStore } from '../store/store';
 import { CustomGroup } from '../constants';
 import { Key, isArrowKey } from './keys';
 import { getNextSelectedEmoji } from './get-next-selected-emoji';
-import { getEmojiWithVariant } from '../emoji-variants';
 
 /**
  * handleKeyDown handles 5 keydown events (4 arrows, enter).
@@ -20,15 +19,10 @@ export const handleKeyDown = (
 
 		const searchInput = getEmojiPickerStore().searchInput;
 		const searchEmojisResults = getEmojiPickerStore().searchEmojisResults;
-		const frequentlyUsedEmojis =
-			getEmojiPickerStore().frequentlyUsedEmojis ?? [];
+		const frequentlyUsedEmojis = getEmojiPickerStore().frequentlyUsedEmojis ?? [];
 
-		const firstGroup = searchInput
-			? CustomGroup.SearchResults
-			: CustomGroup.FrequentlyUsed;
-		const firstGroupEmojis = searchInput
-			? searchEmojisResults
-			: frequentlyUsedEmojis;
+		const firstGroup = searchInput ? CustomGroup.SearchResults : CustomGroup.FrequentlyUsed;
+		const firstGroupEmojis = searchInput ? searchEmojisResults : frequentlyUsedEmojis;
 
 		const nextSelectedEmoji = getNextSelectedEmoji(
 			selectedEmoji,
@@ -43,10 +37,8 @@ export const handleKeyDown = (
 		const selectedEmoji = getEmojiPickerStore().selectedEmoji;
 		if (selectedEmoji) {
 			const baseEmoji = selectedEmoji.emoji;
-			const skinTone = getEmojiPickerStore().skinTone;
-			const emojiWithVariant = getEmojiWithVariant(baseEmoji, skinTone);
 			const handleEmojiSelect = getEmojiPickerStore().handleEmojiSelect;
-			handleEmojiSelect(emojiWithVariant, baseEmoji, selectedEmoji.group);
+			handleEmojiSelect(baseEmoji, baseEmoji, selectedEmoji.group);
 		}
 	}
 };

@@ -1,22 +1,18 @@
 {
-	"name": "emoogle-emoji-picker",
-	"version": "1.0.2",
-	"description": "The emoji picker React component created and used by Emoogle, the best emoji desktop app for emoji fans.",
+	"name": "shadcn-emoji-picker",
+	"version": "1.0.0",
+	"description": "The emoji picker component created with Shadcn UI, fork of Emoogle Emoji Picker",
 	"keywords": [
 		"emoji",
 		"emoji picker",
 		"React",
-		"Emoogle"
+		"Emoogle",
+		"Shadcn"
 	],
-	"homepage": "https://github.com/xitanggg/emoogle-emoji-picker",
-	"bugs": {
-		"url": "https://github.com/xitanggg/emoogle-emoji-picker/issues"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/xitanggg/emoogle-emoji-picker.git"
 	},
-	"author": "Xitang Zhao <hello@emoogle.org> (https://emoogle.org/)",
 	"license": "MIT",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -45,7 +41,7 @@
 	},
 	"devDependencies": {
 		"@changesets/cli": "^2.27.9",
-		"@types/node": "^22.9.0",
+		"@types/node": "^22.10.1",
 		"@types/react": "^18.3.12",
 		"@types/react-dom": "^18.3.1",
 		"@vitejs/plugin-react": "^4.3.3",
@@ -72,6 +68,12 @@
 	},
 	"dependencies": {
 		"@radix-ui/react-dropdown-menu": "^2.1.2",
+		"@radix-ui/react-slot": "^1.1.0",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"lucide-react": "^0.464.0",
+		"tailwind-merge": "^2.5.5",
+		"tailwindcss-animate": "^1.0.7",
 		"usehooks-ts": "^3.1.0"
 	}
 }
