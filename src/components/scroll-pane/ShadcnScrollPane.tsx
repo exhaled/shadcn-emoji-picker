@@ -6,19 +6,22 @@ import { cn } from '../../lib/utils';
 import DefaultGroupPanel from './default-group-panel';
 import NoResults from './no-results';
 import { GroupPanel } from './group-panel';
+import { ScrollArea, ScrollBar } from '../ui/scroll-area';
 
-const outerContainerClasses = cn(
-	'px-[var(--emoji-picker-padding)]',
-	'relative'
-);
+const outerContainerClasses = 'px-[var(--emoji-picker-padding)] relative';
 
-const scrollPaneClasses = cn(
-	'overflow-y-scroll overflow-x-hidden snap-y',
-	'scrollbar-w-[4px] scrollbar-thumb-rounded-full scrollbar scrollbar-thumb-muted',
+const scrollPaneClasses = [
 	'max-h-[var(--emoji-scroll-pane-max-height)]',
-	'mb-2',
-	'pr-[3px]'
-);
+	'mb-2 pr-2',
+	'scroll-smooth h-auto',
+];
+
+const viewportClasses = [
+	'[&>[data-radix-scroll-area-viewport]]:max-h-[inherit]',
+	'[&>[data-radix-scroll-area-viewport]]:snap-y [&>[data-radix-scroll-area-viewport]]:snap-mandatory',
+];
+
+const groupClasses = 'snap-start snap-always';
 
 /**
  * ShadcnScrollPane renders emojis from the selected category in a scrollable container
@@ -29,24 +32,24 @@ export const ScrollPanel = () => {
 	const selectedEmoji = useEmojiPickerSelector((state) => state.selectedEmoji);
 	const selectedGroup = useEmojiPickerSelector((state) => state.selectedGroup);
 	const searchInput = useEmojiPickerSelector((state) => state.searchInput);
-	const searchEmojisResults = useEmojiPickerSelector(
-		(state) => state.searchEmojisResults
-	);
+	const searchEmojisResults = useEmojiPickerSelector((state) => state.searchEmojisResults);
 
 	// When there's a search input, show search results regardless of selected group
 	if (searchInput.trim()) {
 		return (
 			<div className={outerContainerClasses}>
-				<section ref={scrollPaneRef} className={scrollPaneClasses}>
-					<GroupPanel
-						group={CustomGroup.SearchResults}
-						emojis={searchEmojisResults}
-						selectedEmoji={selectedEmoji}
-						memo={false}
-					>
-						{searchEmojisResults.length === 0 && <NoResults type="search" />}
-					</GroupPanel>
-				</section>
+				<ScrollArea ref={scrollPaneRef} className={cn(scrollPaneClasses, viewportClasses)}>
+					<div className={groupClasses}>
+						<GroupPanel
+							group={CustomGroup.SearchResults}
+							emojis={searchEmojisResults}
+							selectedEmoji={selectedEmoji}
+							memo={false}
+						>
+							{searchEmojisResults.length === 0 && <NoResults type="search" />}
+						</GroupPanel>
+					</div>
+				</ScrollArea>
 			</div>
 		);
 	}
@@ -54,29 +57,29 @@ export const ScrollPanel = () => {
 	// Show selected category emojis
 	return (
 		<div className={outerContainerClasses}>
-			<section
+			<ScrollArea
 				ref={scrollPaneRef}
-				className={scrollPaneClasses}
+				className={cn(scrollPaneClasses, viewportClasses)}
 				onMouseDown={(e) => {
 					e.preventDefault();
 				}}
 			>
-				{selectedGroup === CustomGroup.FrequentlyUsed ? (
-					<DefaultGroupPanel />
-				) : (
-					<GroupPanel
-						key={selectedGroup}
-						group={selectedGroup}
-						emojis={
-							GROUP_TO_BASE_EMOJIS[
-								selectedGroup as keyof typeof GROUP_TO_BASE_EMOJIS
-							] || []
-						}
-						selectedEmoji={selectedEmoji}
-						memo={true}
-					/>
-				)}
-			</section>
+				<div className={groupClasses}>
+					{selectedGroup === CustomGroup.FrequentlyUsed ? (
+						<DefaultGroupPanel />
+					) : (
+						<GroupPanel
+							key={selectedGroup}
+							group={selectedGroup}
+							emojis={
+								GROUP_TO_BASE_EMOJIS[selectedGroup as keyof typeof GROUP_TO_BASE_EMOJIS] || []
+							}
+							selectedEmoji={selectedEmoji}
+							memo={true}
+						/>
+					)}
+				</div>
+			</ScrollArea>
 		</div>
 	);
 };

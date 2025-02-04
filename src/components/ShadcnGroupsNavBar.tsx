@@ -52,6 +52,20 @@ export const GroupsNavigation = () => {
 		}
 	};
 
+	const handleGroupChange = (group: NavBarGroup) => {
+		// Find the ScrollArea viewport and reset its scroll position
+		const viewport = document.querySelector('[data-radix-scroll-area-viewport]');
+		if (viewport) {
+			viewport.scrollTop = 0;
+		}
+
+		setEmojiPickerStore({
+			selectedGroup: group,
+			searchInput: '',
+			searchEmojisResults: [],
+		});
+	};
+
 	// Focus the selected group's button when it changes
 	useEffect(() => {
 		if (Object.keys(GROUP_TO_ICON).includes(selectedGroup)) {
@@ -79,13 +93,7 @@ export const GroupsNavigation = () => {
 							variant={isSelected ? 'secondary' : 'ghost'}
 							size="icon"
 							className="w-8 h-8"
-							onClick={() => {
-								setEmojiPickerStore({
-									selectedGroup: group,
-									searchInput: '',
-									searchEmojisResults: [],
-								});
-							}}
+							onClick={() => handleGroupChange(group)}
 							onKeyDown={(e) => handleKeyDown(e, index)}
 							aria-label={`Show ${group} emojis`}
 							aria-selected={isSelected}

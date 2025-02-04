@@ -4,6 +4,7 @@ import { getEmojiWithVariant } from '../../lib/emoji-variants';
 import { NUM_EMOJIS_PER_ROW } from '../../lib/constants';
 import type { Group } from '../../lib/types';
 import { EmojiButton } from './emoji-button';
+import { cn } from '../../lib/utils';
 
 interface GroupPanelProps {
 	group: Group;
@@ -21,10 +22,13 @@ const GroupPanelCore = ({ group, emojis, selectedEmoji, children }: GroupPanelPr
 	const { getEmojiPickerStore } = useEmojiPickerStore();
 
 	return (
-		<section role="tabpanel" aria-label={`${group} emojis`}>
+		<section 
+			role="tabpanel" 
+			aria-label={`${group} emojis`}
+		>
 			{children}
 
-			<ul className="grid grid-cols-9 gap-1">
+			<ul className="grid grid-cols-9 gap-px">
 				{emojis.map((baseEmoji, idx) => {
 					const emojiWithVariant = getEmojiWithVariant(baseEmoji);
 					const isSelected = group === selectedEmoji?.group && idx === selectedEmoji?.idx;
@@ -35,7 +39,7 @@ const GroupPanelCore = ({ group, emojis, selectedEmoji, children }: GroupPanelPr
 					return (
 						<li
 							key={idx}
-							className={isFirstInRow ? `flex items-center snap-end relative` : undefined}
+							className={isFirstInRow ? `flex items-center snap-start` : undefined}
 							data-row-number={isFirstInRow ? rowNum : undefined}
 						>
 							<EmojiButton
