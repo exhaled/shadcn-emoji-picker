@@ -68,12 +68,20 @@ export const SearchBar = () => {
 					)}
 					placeholder="Search emoji"
 					value={searchInput}
-					onChange={(e) => handleSearch(e.target.value)}
+					onChange={(e) => {
+						const newSearchInput = e.target.value;
+						handleSearch(newSearchInput);
+						// Switch to first group when search begins
+						if (newSearchInput && !searchInput) {
+							setEmojiPickerStore({ selectedGroup: CustomGroup.FrequentlyUsed});
+						}
+					}}
 					onKeyDown={(e) => {
 						const key = e.key;
 						const caretPosition = (e.target as HTMLInputElement).selectionStart;
 
-						const selectedEmoji = getEmojiPickerStore().selectedEmoji;
+						const store = getEmojiPickerStore();
+						const selectedEmoji = store.selectedEmoji;
 						const isFirstGroup =
 							selectedEmoji?.group === CustomGroup.FrequentlyUsed ||
 							selectedEmoji?.group === CustomGroup.SearchResults;
@@ -89,9 +97,19 @@ export const SearchBar = () => {
 							caretPosition !== searchInput.length
 						) {
 							e.stopPropagation();
-						} else if (key === 'Tab' && searchAutoCompleteSuggestion) {
-							e.preventDefault();
-							handleSearch(searchAutoCompleteSuggestion);
+						} else if (key === 'Tab') {
+							const hasSearchResults = store.searchEmojisResults.length > 0;
+							if (searchAutoCompleteSuggestion && hasSearchResults) {
+								e.preventDefault();
+								handleSearch(searchAutoCompleteSuggestion);
+							} else {
+								e.preventDefault();
+								// Find and focus the first group button
+								const firstGroupButton = document.querySelector('[role="tablist"] button') as HTMLButtonElement;
+								if (firstGroupButton) {
+									firstGroupButton.focus();
+								}
+							}
 						}
 					}}
 				/>

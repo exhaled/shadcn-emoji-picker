@@ -1,12 +1,12 @@
 import { Button } from './ui/button';
 import type { NavBarGroup } from '../lib/types';
 import { useEmojiPickerSelector, useEmojiPickerStore } from '../lib/store/hooks';
-import { Search, Smile, Cat, Coffee, Plane, Gamepad2, Laptop2, Hash, Flag } from 'lucide-react';
+import { Smile, Cat, Coffee, Plane, Gamepad2, Laptop2, Hash, Flag, Clock } from 'lucide-react';
 import { useRef, useEffect } from 'react';
 
 // Note: The order of the mapping matters here as it is the order of the group icons
 const GROUP_TO_ICON: Record<NavBarGroup, React.ComponentType<{ className?: string }>> = {
-	'Frequently Used': Search,
+	'Frequently Used': Clock,
 	'Smileys & Emotion': Smile,
 	'Animals & Nature': Cat,
 	'Food & Drink': Coffee,
@@ -26,6 +26,7 @@ export const GroupsNavigation = () => {
 	const selectedGroup = useEmojiPickerSelector((state) => state.selectedGroup);
 	const { setEmojiPickerStore } = useEmojiPickerStore();
 	const buttonsRef = useRef<(HTMLButtonElement | null)[]>([]);
+	const wasDirectInteraction = useRef(false);
 	const groups = Object.keys(GROUP_TO_ICON) as NavBarGroup[];
 
 	const handleKeyDown = (e: React.KeyboardEvent, currentIndex: number) => {
@@ -43,6 +44,7 @@ export const GroupsNavigation = () => {
 		}
 
 		if (nextIndex !== null) {
+			wasDirectInteraction.current = true;
 			buttonsRef.current[nextIndex]?.focus();
 			setEmojiPickerStore({
 				selectedGroup: groups[nextIndex],
@@ -59,6 +61,7 @@ export const GroupsNavigation = () => {
 			viewport.scrollTop = 0;
 		}
 
+		wasDirectInteraction.current = true;
 		setEmojiPickerStore({
 			selectedGroup: group,
 			searchInput: '',
@@ -66,14 +69,15 @@ export const GroupsNavigation = () => {
 		});
 	};
 
-	// Focus the selected group's button when it changes
+	// Focus the selected group's button only when changed through direct interaction
 	useEffect(() => {
-		if (Object.keys(GROUP_TO_ICON).includes(selectedGroup)) {
+		if (Object.keys(GROUP_TO_ICON).includes(selectedGroup) && wasDirectInteraction.current) {
 			const selectedIndex = groups.indexOf(selectedGroup as NavBarGroup);
 			if (selectedIndex !== -1) {
 				buttonsRef.current[selectedIndex]?.focus();
 			}
 		}
+		wasDirectInteraction.current = false;
 	}, [selectedGroup]);
 
 	return (

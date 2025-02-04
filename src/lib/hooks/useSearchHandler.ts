@@ -1,7 +1,7 @@
 import type { GetEmojiPickerStore, SetEmojiPickerStore } from '../store/store';
 import type { SelectedEmoji } from '../types';
 import { searchEmojis } from 'emoogle-emoji-search-engine';
-import { CustomGroup } from '../constants';
+import { CustomGroup, GROUPS } from '../constants';
 
 export const useSearchHandler = (
 	getEmojiPickerStore: GetEmojiPickerStore,
@@ -9,17 +9,14 @@ export const useSearchHandler = (
 ) => {
 	return (searchInput: string) => {
 		const customEmojiKeywords = getEmojiPickerStore().customEmojiKeywords;
-		const customKeywordMostRelevantEmoji =
-			getEmojiPickerStore().customKeywordMostRelevantEmoji;
+		const customKeywordMostRelevantEmoji = getEmojiPickerStore().customKeywordMostRelevantEmoji;
 		const recentlySearchedInputs = getEmojiPickerStore().recentlySearchedInputs;
 		const searchEmojisResults = searchEmojis(searchInput, undefined, {
 			customEmojiKeywords,
 			customKeywordMostRelevantEmoji,
 			recentlySearchedInputs,
 		});
-		const frequentlyUsedEmojis = getEmojiPickerStore().frequentlyUsedEmojis;
-
-		let selectedEmoji: SelectedEmoji;
+		let selectedEmoji: SelectedEmoji | undefined;
 
 		if (searchEmojisResults.length > 0) {
 			selectedEmoji = {
@@ -27,20 +24,12 @@ export const useSearchHandler = (
 				idx: 0,
 				emoji: searchEmojisResults[0],
 			};
-		} else {
-			if (searchInput === '' && frequentlyUsedEmojis.length > 0) {
-				selectedEmoji = {
-					group: CustomGroup.FrequentlyUsed,
-					idx: 0,
-					emoji: frequentlyUsedEmojis[0],
-				};
-			} else {
-				selectedEmoji = {
-					group: 'Smileys & Emotion',
-					idx: 0,
-					emoji: '😀',
-				};
-			}
+		} else if (searchInput !== '') {
+			selectedEmoji = {
+				group: GROUPS[0],
+				idx: 0,
+				emoji: '😀',
+			};
 		}
 
 		setEmojiPickerStore({
@@ -49,4 +38,4 @@ export const useSearchHandler = (
 			selectedEmoji,
 		});
 	};
-}; 
+};
