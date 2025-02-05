@@ -2,6 +2,7 @@ import { type Group } from '../../lib/types';
 import { GROUP_TO_BASE_EMOJIS, CustomGroup } from '../../lib/constants';
 import { useEmojiPickerSelector } from '../../lib/store/hooks';
 import { useSetScrollPaneRef } from '../../lib/hooks/useSetScrollPaneRef';
+import { useEmojiScroll } from '../../lib/hooks/useEmojiScroll';
 import { cn } from '../../lib/utils';
 import DefaultGroupPanel from './default-group-panel';
 import NoResults from './no-results';
@@ -34,27 +35,23 @@ export const ScrollPanel = () => {
 	const searchInput = useEmojiPickerSelector((state) => state.searchInput);
 	const searchEmojisResults = useEmojiPickerSelector((state) => state.searchEmojisResults);
 
-	// When there's a search input, show search results regardless of selected group
-	if (searchInput.trim()) {
-		return (
-			<div className={outerContainerClasses}>
-				<ScrollArea ref={scrollPaneRef} className={cn(scrollPaneClasses, viewportClasses)}>
-					<div className={groupClasses}>
-						<GroupPanel
-							group={CustomGroup.SearchResults}
-							emojis={searchEmojisResults}
-							selectedEmoji={selectedEmoji}
-							memo={false}
-						>
-							{searchEmojisResults.length === 0 && <NoResults type="search" />}
-						</GroupPanel>
-					</div>
-				</ScrollArea>
-			</div>
-		);
-	}
+	// Add auto-scrolling functionality
+	useEmojiScroll(scrollPaneRef);
 
-	// Show selected category emojis
+	const renderGroupPanel = (group: Group, emojis: string[]) => (
+		<GroupPanel
+			key={group}
+			group={group}
+			emojis={emojis}
+			selectedEmoji={selectedEmoji}
+			memo={group !== CustomGroup.SearchResults}
+		>
+			{group === CustomGroup.SearchResults && emojis.length === 0 && (
+				<NoResults type="search" />
+			)}
+		</GroupPanel>
+	);
+
 	return (
 		<div className={outerContainerClasses}>
 			<ScrollArea
@@ -65,18 +62,15 @@ export const ScrollPanel = () => {
 				}}
 			>
 				<div className={groupClasses}>
-					{selectedGroup === CustomGroup.FrequentlyUsed ? (
+					{searchInput.trim() ? (
+						renderGroupPanel(CustomGroup.SearchResults, searchEmojisResults)
+					) : selectedGroup === CustomGroup.FrequentlyUsed ? (
 						<DefaultGroupPanel />
 					) : (
-						<GroupPanel
-							key={selectedGroup}
-							group={selectedGroup}
-							emojis={
-								GROUP_TO_BASE_EMOJIS[selectedGroup as keyof typeof GROUP_TO_BASE_EMOJIS] || []
-							}
-							selectedEmoji={selectedEmoji}
-							memo={true}
-						/>
+						renderGroupPanel(
+							selectedGroup,
+							GROUP_TO_BASE_EMOJIS[selectedGroup as keyof typeof GROUP_TO_BASE_EMOJIS] || []
+						)
 					)}
 				</div>
 			</ScrollArea>

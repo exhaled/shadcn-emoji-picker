@@ -10,6 +10,8 @@ import { useSearchBarKeyboardFocus } from '../lib/hooks/useSearchBarKeyboardFocu
 import { useSearchAutoComplete } from '../lib/hooks/useSearchAutoComplete';
 import { useSearchHandler } from '../lib/hooks/useSearchHandler';
 import { CustomGroup } from '../lib/constants';
+import { handleKeyDown } from '../lib/key-down/handle-key-down';
+import { Key } from '../lib/key-down/keys';
 
 const inputBaseClasses = 'h-9 px-8 py-1';
 
@@ -40,8 +42,9 @@ export const SearchBar = () => {
 
 	useEffect(() => {
 		if (autoFocus) {
-			inputRef.current?.blur();
 			inputRef.current?.focus();
+			// Reset autoFocus after focusing
+			setEmojiPickerStore({ autoFocus: false });
 		}
 	}, [autoFocus]);
 
@@ -71,10 +74,6 @@ export const SearchBar = () => {
 					onChange={(e) => {
 						const newSearchInput = e.target.value;
 						handleSearch(newSearchInput);
-						// Switch to first group when search begins
-						if (newSearchInput && !searchInput) {
-							setEmojiPickerStore({ selectedGroup: CustomGroup.FrequentlyUsed});
-						}
 					}}
 					onKeyDown={(e) => {
 						const key = e.key;
@@ -82,33 +81,80 @@ export const SearchBar = () => {
 
 						const store = getEmojiPickerStore();
 						const selectedEmoji = store.selectedEmoji;
-						const isFirstGroup =
-							selectedEmoji?.group === CustomGroup.FrequentlyUsed ||
-							selectedEmoji?.group === CustomGroup.SearchResults;
-						const isFirstIdx = selectedEmoji?.idx === 0;
-						const isFirstEmoji = isFirstGroup && isFirstIdx;
+						const searchResults = store.searchEmojisResults;
+						const hasSearchResults = searchResults.length > 0;
 
-						if (key === 'ArrowUp' || key === 'ArrowDown') {
+						// Always prevent propagation when handling keyboard events in search
+						e.stopPropagation();
+
+						// Handle Tab key
+						if (key === 'Tab') {
 							e.preventDefault();
-						} else if (key === 'ArrowLeft' && selectedEmoji && !isFirstEmoji) {
-							e.preventDefault();
-						} else if (
-							key === 'ArrowRight' &&
-							caretPosition !== searchInput.length
-						) {
-							e.stopPropagation();
-						} else if (key === 'Tab') {
-							const hasSearchResults = store.searchEmojisResults.length > 0;
+
 							if (searchAutoCompleteSuggestion && hasSearchResults) {
-								e.preventDefault();
 								handleSearch(searchAutoCompleteSuggestion);
 							} else {
-								e.preventDefault();
 								// Find and focus the first group button
 								const firstGroupButton = document.querySelector('[role="tablist"] button') as HTMLButtonElement;
 								if (firstGroupButton) {
+									inputRef.current?.blur();
 									firstGroupButton.focus();
 								}
+							}
+							return;
+						}
+
+						// Handle arrow keys
+						if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(key)) {
+							const isAtStart = caretPosition === 0;
+							const isAtEnd = caretPosition === searchInput.length;
+							const isVerticalNavigation = key === 'ArrowUp' || key === 'ArrowDown';
+							
+							// If we have search results, prioritize emoji navigation over text cursor movement
+							if (hasSearchResults && (isVerticalNavigation || isAtStart || isAtEnd)) {
+								e.preventDefault();
+
+								// Ensure we have a selected emoji when starting navigation
+								if (!selectedEmoji) {
+									setEmojiPickerStore({
+										selectedEmoji: {
+											group: CustomGroup.SearchResults,
+											idx: 0,
+											emoji: searchResults[0],
+										},
+									});
+									return;
+								}
+								
+								// Map web key to internal key type
+								const keyMap = {
+									ArrowLeft: Key.Left,
+									ArrowRight: Key.Right,
+									ArrowUp: Key.Up,
+									ArrowDown: Key.Down,
+								};
+
+								handleKeyDown(
+									keyMap[key as keyof typeof keyMap],
+									getEmojiPickerStore,
+									setEmojiPickerStore
+								);
+								return;
+							}
+
+							// Only prevent default for vertical navigation to avoid text cursor movement
+							if (isVerticalNavigation) {
+								e.preventDefault();
+							}
+						}
+
+						// Handle Enter key
+						if (key === 'Enter' && selectedEmoji) {
+							e.preventDefault();
+							const baseEmoji = selectedEmoji.emoji;
+							const handleEmojiSelect = store.handleEmojiSelect;
+							if (handleEmojiSelect) {
+								handleEmojiSelect(baseEmoji, baseEmoji, selectedEmoji.group);
 							}
 						}
 					}}

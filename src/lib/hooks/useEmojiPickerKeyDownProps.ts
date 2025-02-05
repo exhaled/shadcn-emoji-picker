@@ -14,31 +14,36 @@ type WebKey = keyof typeof WEB_KEY_TO_KEY_DOWN_CONTROL_KEY;
 
 /**
  * Return 2 props for the emoji picker: addKeyDownEventListener and removeKeyDownEventListener,
- * which are used to subscribe/unsubscribe to 6 keydown events (4 arrow keys, enter, escape)
- * to control emoji picker navigation, entering and exiting.
- *
- * Note
- * - We subscribe to keydown event because arrow key is only triggered on keydown
+ * which are used to subscribe/unsubscribe to keydown events for emoji navigation.
  */
 export const useEmojiPickerKeyDownProps = () => {
 	const { getEmojiPickerStore, setEmojiPickerStore } = useEmojiPickerStore();
 
-	// It is important to use useCallback to memoize the event listener function,
-	// so it doesn't get double added on re-renders, e.g. when props change.
-	// Reference: https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
-	// 	"If the function or object is already in the list of event listeners for this target,
-	// 	the function or object is not added a second time."
 	const keyDownEventCallback = useCallback((e: KeyboardEvent) => {
 		const key = e.key;
+
+		// Don't handle events if target is an input or if modifier keys are pressed
+		if (e.target instanceof HTMLInputElement || e.ctrlKey || e.altKey || e.metaKey || e.shiftKey) {
+			return;
+		}
+
+		if (key === 'Tab') {
+			e.preventDefault();
+			setEmojiPickerStore({ autoFocus: true });
+			return;
+		}
+
 		if (key in WEB_KEY_TO_KEY_DOWN_CONTROL_KEY) {
+			e.preventDefault();
 			handleKeyDown(
 				WEB_KEY_TO_KEY_DOWN_CONTROL_KEY[key as WebKey],
 				getEmojiPickerStore,
 				setEmojiPickerStore
 			);
 		} else if (key === 'Escape') {
-			getEmojiPickerStore().resetEmojiPickerState();
-			const onEscapeKeyDown = getEmojiPickerStore().onEscapeKeyDown;
+			const store = getEmojiPickerStore();
+			store.resetEmojiPickerState();
+			const onEscapeKeyDown = store.onEscapeKeyDown;
 			if (onEscapeKeyDown) {
 				onEscapeKeyDown();
 			}
@@ -46,8 +51,6 @@ export const useEmojiPickerKeyDownProps = () => {
 	}, []);
 
 	const addKeyDownEventListener = () => {
-		// Note: We attach event listener to window instead of document so search input can use
-		// e.stopPropagation() correctly: https://github.com/facebook/react/issues/4335#issuecomment-421705171
 		window.addEventListener('keydown', keyDownEventCallback);
 	};
 
@@ -55,7 +58,6 @@ export const useEmojiPickerKeyDownProps = () => {
 		window.removeEventListener('keydown', keyDownEventCallback);
 	};
 
-	// Clean up event listener when component unmounts
 	useEffect(() => {
 		return () => {
 			removeKeyDownEventListener();
