@@ -171,7 +171,9 @@ export const createEmojiPickerStore = (props: EmojiPickerProps) => {
 						onEmojiSelect(emojiVariant, { baseEmoji, group, searchInput });
 					}
 
-					set(RESET_STATE);
+					if (group !== CustomGroup.SearchResults) {
+						set(RESET_STATE);
+					}
 				},
 
 				resetEmojiPickerState: () => set(RESET_STATE),
