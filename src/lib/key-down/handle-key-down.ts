@@ -38,7 +38,7 @@ export const handleKeyDown = (
 		if (selectedEmoji) {
 			const baseEmoji = selectedEmoji.emoji;
 			const handleEmojiSelect = getEmojiPickerStore().handleEmojiSelect;
-			handleEmojiSelect(baseEmoji, baseEmoji, selectedEmoji.group);
+			handleEmojiSelect(baseEmoji, selectedEmoji.group);
 		}
 	}
 };

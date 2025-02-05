@@ -80,7 +80,7 @@ const useSearchBarKeyDown = (
 			const baseEmoji = selectedEmoji.emoji;
 			const handleEmojiSelect = store.handleEmojiSelect;
 			if (handleEmojiSelect) {
-				handleEmojiSelect(baseEmoji, baseEmoji, selectedEmoji.group);
+				handleEmojiSelect(baseEmoji, selectedEmoji.group);
 			}
 		}
 	};

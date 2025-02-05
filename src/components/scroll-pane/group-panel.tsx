@@ -1,6 +1,5 @@
 import { memo } from 'react';
 import { useEmojiPickerStore } from '../../lib/store/hooks';
-import { getEmojiWithVariant } from '../../lib/emoji-variants';
 import { NUM_EMOJIS_PER_ROW } from '../../lib/constants';
 import type { Group } from '../../lib/types';
 import { EmojiButton } from './emoji-button';
@@ -30,7 +29,6 @@ const GroupPanelCore = ({ group, emojis, selectedEmoji, children }: GroupPanelPr
 
 			<ul className="grid grid-cols-9 gap-px">
 				{emojis.map((baseEmoji, idx) => {
-					const emojiWithVariant = getEmojiWithVariant(baseEmoji);
 					const isSelected = group === selectedEmoji?.group && idx === selectedEmoji?.idx;
 
 					const isFirstInRow = idx % NUM_EMOJIS_PER_ROW === 0;
@@ -43,11 +41,11 @@ const GroupPanelCore = ({ group, emojis, selectedEmoji, children }: GroupPanelPr
 							data-row-number={isFirstInRow ? rowNum : undefined}
 						>
 							<EmojiButton
-								emoji={emojiWithVariant}
+								emoji={baseEmoji}
 								isSelected={isSelected}
 								onClick={() => {
 									const handleEmojiSelect = getEmojiPickerStore().handleEmojiSelect;
-									handleEmojiSelect(emojiWithVariant, baseEmoji, group);
+									handleEmojiSelect(baseEmoji, group);
 								}}
 							/>
 						</li>
