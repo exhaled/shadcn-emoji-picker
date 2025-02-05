@@ -16,14 +16,13 @@ export interface EmojiPickerProps {
 	onEmojiSelect?: OnEmojiSelect;
 	onEscapeKeyDown?: OnEscapeKeyDown;
 	autoFocus?: boolean;
-	simulateSearchInputFocus?: boolean;
 }
 
 interface InternalState {
 	scrollPaneElement: HTMLDivElement | null;
 	searchInput: string;
 	searchEmojisResults: string[];
-	selectedGroup?: Group;
+	selectedGroup: Group;
 	selectedEmoji?: SelectedEmoji;
 	frequentlyUsedEmojis: string[];
 	customEmojiKeywords: Record<string, string[]>;
@@ -31,8 +30,12 @@ interface InternalState {
 	recentlySearchedInputs: string[];
 	lastAutoScrollTimeInMs: number;
 	autoFocus: boolean;
-	simulateSearchInputFocus: boolean;
 }
+
+const MAX_ITEMS = {
+	FREQUENTLY_USED: 18,
+	RECENT_SEARCHES: 10,
+} as const;
 
 const DEFAULT_STATE: InternalState = {
 	scrollPaneElement: null,
@@ -46,17 +49,13 @@ const DEFAULT_STATE: InternalState = {
 	recentlySearchedInputs: [],
 	lastAutoScrollTimeInMs: Date.now(),
 	autoFocus: false,
-	simulateSearchInputFocus: false,
 };
 
-const RESET_STATE = {
+const RESET_STATE: Partial<InternalState> = {
 	searchInput: '',
 	searchEmojisResults: [],
 	selectedEmoji: undefined,
 };
-
-const MAX_FREQUENTLY_USED = 18;
-const MAX_RECENT_SEARCHES = 10;
 
 // Utility functions for state updates
 const addToStartUnique = <T>(arr: T[], item: T, maxItems: number): T[] =>
@@ -79,11 +78,7 @@ interface StoreActions {
 	addFrequentlyUsedEmoji: (emoji: string) => void;
 	addSearchedInput: (input: string) => void;
 	updateCustomKeywords: (emoji: string, keyword: string) => void;
-	handleEmojiSelect: (
-		emojiVariant: string,
-		baseEmoji: string,
-		group: Group
-	) => void;
+	handleEmojiSelect: (emojiVariant: string, baseEmoji: string, group: Group) => void;
 	resetEmojiPickerState: () => void;
 }
 
@@ -110,7 +105,7 @@ export const createEmojiPickerStore = (props: EmojiPickerProps) => {
 						frequentlyUsedEmojis: addToStartUnique(
 							state.frequentlyUsedEmojis,
 							emoji,
-							MAX_FREQUENTLY_USED
+							MAX_ITEMS.FREQUENTLY_USED
 						),
 					})),
 
@@ -119,53 +114,46 @@ export const createEmojiPickerStore = (props: EmojiPickerProps) => {
 						recentlySearchedInputs: addToStartUnique(
 							state.recentlySearchedInputs,
 							input,
-							MAX_RECENT_SEARCHES
+							MAX_ITEMS.RECENT_SEARCHES
 						),
 					})),
 
 				updateCustomKeywords: (emoji, keyword) =>
 					set((state) => ({
-						customEmojiKeywords: updateKeywordList(
-							state.customEmojiKeywords,
-							emoji,
-							keyword
-						),
+						customEmojiKeywords: updateKeywordList(state.customEmojiKeywords, emoji, keyword),
 					})),
 
 				handleEmojiSelect: (emojiVariant, baseEmoji, group) => {
 					const { searchInput, onEmojiSelect } = get();
+					const updates: Partial<InternalState> = {
+						frequentlyUsedEmojis: addToStartUnique(
+							get().frequentlyUsedEmojis,
+							baseEmoji,
+							MAX_ITEMS.FREQUENTLY_USED
+						),
+					};
 
 					if (searchInput) {
-						set((state) => ({
-							recentlySearchedInputs: addToStartUnique(
-								state.recentlySearchedInputs,
-								searchInput,
-								MAX_RECENT_SEARCHES
-							),
-							customKeywordMostRelevantEmoji: {
-								...state.customKeywordMostRelevantEmoji,
-								[searchInput]: baseEmoji,
-							},
-						}));
+						updates.recentlySearchedInputs = addToStartUnique(
+							get().recentlySearchedInputs,
+							searchInput,
+							MAX_ITEMS.RECENT_SEARCHES
+						);
+						updates.customKeywordMostRelevantEmoji = {
+							...get().customKeywordMostRelevantEmoji,
+							[searchInput]: baseEmoji,
+						};
 
 						if (group !== CustomGroup.SearchResults) {
-							set((state) => ({
-								customEmojiKeywords: updateKeywordList(
-									state.customEmojiKeywords,
-									baseEmoji,
-									searchInput
-								),
-							}));
+							updates.customEmojiKeywords = updateKeywordList(
+								get().customEmojiKeywords,
+								baseEmoji,
+								searchInput
+							);
 						}
 					}
 
-					set((state) => ({
-						frequentlyUsedEmojis: addToStartUnique(
-							state.frequentlyUsedEmojis,
-							baseEmoji,
-							MAX_FREQUENTLY_USED
-						),
-					}));
+					set(updates);
 
 					if (onEmojiSelect) {
 						onEmojiSelect(emojiVariant, { baseEmoji, group, searchInput });
@@ -190,6 +178,4 @@ export const createEmojiPickerStore = (props: EmojiPickerProps) => {
 
 export type EmojiPickerZustandStore = ReturnType<typeof createEmojiPickerStore>;
 export type GetEmojiPickerStore = () => EmojiPickerStore;
-export type SetEmojiPickerStore = (
-	partialStore: Partial<EmojiPickerStore>
-) => void;
+export type SetEmojiPickerStore = (partialStore: Partial<EmojiPickerStore>) => void;

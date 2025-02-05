@@ -14,7 +14,7 @@ const MemoizedEmojiPicker = memo(EmojiPickerEmpty);
 
 const EmojiPicker: FC<EmojiPickerSProps> = (props) => {
 	return (
-		<DropdownMenu open={true}>
+		<DropdownMenu >
 			<DropdownMenuTrigger asChild>
 				<Button>Open</Button>
 			</DropdownMenuTrigger>

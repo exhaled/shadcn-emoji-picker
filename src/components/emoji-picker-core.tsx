@@ -6,7 +6,7 @@ import { EmojiPickerStoreProvider } from '../lib/store/StoreProvider';
 
 import { useEmojiPickerSelector } from '../lib/store/hooks';
 import { useEmojiPickerKeyDownProps } from '../lib/hooks/useEmojiPickerKeyDownProps';
-import { ScrollPanel } from './scroll-pane/ShadcnScrollPane';
+import { ScrollPanel } from './scroll-pane/scroll-panel';
 import { GroupsNavigation } from './groups-navigation';
 import { SearchBar } from './search-bar';
 

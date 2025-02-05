@@ -2,15 +2,7 @@ import { useEffect, useCallback } from 'react';
 import { useEmojiPickerStore } from '../store/hooks';
 import { handleKeyDown } from '../key-down/handle-key-down';
 import { Key } from '../key-down/keys';
-
-const WEB_KEY_TO_KEY_DOWN_CONTROL_KEY = {
-	ArrowLeft: Key.Left,
-	ArrowRight: Key.Right,
-	ArrowUp: Key.Up,
-	ArrowDown: Key.Down,
-	Enter: Key.Enter,
-} as const;
-type WebKey = keyof typeof WEB_KEY_TO_KEY_DOWN_CONTROL_KEY;
+import { WEB_KEY_TO_KEY_DOWN_CONTROL_KEY, type WebKey } from '../constants';
 
 /**
  * Return 2 props for the emoji picker: addKeyDownEventListener and removeKeyDownEventListener,
