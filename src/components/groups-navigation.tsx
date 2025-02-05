@@ -5,6 +5,7 @@ import { Smile, Cat, Coffee, Plane, Gamepad2, Laptop2, Hash, Flag, Clock } from 
 import { useRef, useEffect } from 'react';
 import { GROUP_TO_BASE_EMOJIS, CustomGroup } from '../lib/constants';
 import { useEmojiPickerKeyDownProps } from '../lib/hooks/useEmojiPickerKeyDownProps';
+import { useSetScrollPaneRef } from '../lib/hooks/useSetScrollPaneRef';
 
 // Note: The order of the mapping matters here as it is the order of the group icons
 const GROUP_TO_ICON: Record<NavBarGroup, React.ComponentType<{ className?: string }>> = {
@@ -31,11 +32,19 @@ export const GroupsNavigation = () => {
 	const wasDirectInteraction = useRef(false);
 	const groups = Object.keys(GROUP_TO_ICON) as NavBarGroup[];
 	const { addKeyDownEventListener, removeKeyDownEventListener } = useEmojiPickerKeyDownProps();
+	const { viewportRef } = useSetScrollPaneRef();
+
+	// Store first button ref in store when available
+	useEffect(() => {
+		if (buttonsRef.current[0]) {
+			setEmojiPickerStore({ firstGroupButtonRef: buttonsRef.current[0] });
+		}
+	}, [setEmojiPickerStore]);
 
 	const moveToEmojis = (currentIndex: number) => {
 		const group = groups[currentIndex];
 		const emojis = GROUP_TO_BASE_EMOJIS[group as DataGroup];
-		
+
 		// If no emojis found for this group, don't proceed
 		if (!emojis?.length) return;
 
@@ -90,10 +99,9 @@ export const GroupsNavigation = () => {
 	};
 
 	const handleGroupChange = (group: NavBarGroup) => {
-		// Find the ScrollArea viewport and reset its scroll position
-		const viewport = document.querySelector('[data-radix-scroll-area-viewport]');
-		if (viewport) {
-			viewport.scrollTop = 0;
+		// Reset viewport scroll position
+		if (viewportRef.current) {
+			viewportRef.current.scrollTop = 0;
 		}
 
 		wasDirectInteraction.current = true;

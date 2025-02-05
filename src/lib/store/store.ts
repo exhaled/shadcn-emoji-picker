@@ -30,6 +30,7 @@ interface InternalState {
 	recentlySearchedInputs: string[];
 	lastAutoScrollTimeInMs: number;
 	autoFocus: boolean;
+	firstGroupButtonRef: HTMLButtonElement | null;
 }
 
 const MAX_ITEMS = {
@@ -49,6 +50,7 @@ const DEFAULT_STATE: InternalState = {
 	recentlySearchedInputs: [],
 	lastAutoScrollTimeInMs: Date.now(),
 	autoFocus: false,
+	firstGroupButtonRef: null,
 };
 
 const RESET_STATE: Partial<InternalState> = {

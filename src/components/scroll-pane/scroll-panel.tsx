@@ -42,10 +42,10 @@ const useScrollPanelState = () => {
  * using Shadcn UI components.
  */
 export const ScrollPanel = () => {
-	const scrollPaneRef = useSetScrollPaneRef();
+	const { scrollPaneRef, viewportRef } = useSetScrollPaneRef();
 	const { selectedEmoji, selectedGroup, searchInput, searchEmojisResults } = useScrollPanelState();
 
-	useEmojiScroll(scrollPaneRef);
+	useEmojiScroll({ scrollPaneRef, viewportRef });
 
 	const renderGroupPanel = (group: Group, emojis: string[]) => (
 		<GroupPanel
@@ -74,6 +74,7 @@ export const ScrollPanel = () => {
 		<div className={CLASSES.outer}>
 			<ScrollArea
 				ref={scrollPaneRef}
+				viewportRef={viewportRef}
 				className={cn(CLASSES.scrollPane, CLASSES.viewport)}
 				onMouseDown={(e) => e.preventDefault()}
 			>

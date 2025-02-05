@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useEmojiPickerStore } from '../store/hooks';
+import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
 
 /**
  * Hook to set scroll pane ref in component store on component mount, so
@@ -7,8 +8,14 @@ import { useEmojiPickerStore } from '../store/hooks';
  * - GroupsNavBar: to scroll to selected group
  * - EmojiButton: to auto scroll to selected emoji
  */
-export const useSetScrollPaneRef = () => {
-	const scrollPaneRef = useRef<HTMLDivElement | null>(null);
+export interface ScrollRefs {
+	scrollPaneRef: React.RefObject<HTMLDivElement>;
+	viewportRef: React.RefObject<React.ElementRef<typeof ScrollAreaPrimitive.Viewport>>;
+}
+
+export const useSetScrollPaneRef = (): ScrollRefs => {
+	const scrollPaneRef = useRef<HTMLDivElement>(null);
+	const viewportRef = useRef<React.ElementRef<typeof ScrollAreaPrimitive.Viewport>>(null);
 
 	const { setEmojiPickerStore } = useEmojiPickerStore();
 
@@ -16,5 +23,8 @@ export const useSetScrollPaneRef = () => {
 		setEmojiPickerStore({ scrollPaneElement: scrollPaneRef.current });
 	}, []);
 
-	return scrollPaneRef;
+	return {
+		scrollPaneRef,
+		viewportRef
+	};
 };

@@ -32,9 +32,7 @@ const useSearchBarKeyDown = (
 			if (searchAutoCompleteSuggestion && hasSearchResults) {
 				handleSearch(searchAutoCompleteSuggestion);
 			} else {
-				const firstGroupButton = document.querySelector(
-					'[role="tablist"] button'
-				) as HTMLButtonElement;
+				const firstGroupButton = store.firstGroupButtonRef;
 				if (firstGroupButton) {
 					inputRef.current?.blur();
 					firstGroupButton.focus();
