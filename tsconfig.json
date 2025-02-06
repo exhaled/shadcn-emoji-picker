@@ -4,6 +4,7 @@
 		"skipLibCheck": true,
 		"resolveJsonModule": true,
 		"module": "Preserve",
+		"strict": true,
 		"lib": ["es2022", "dom", "dom.iterable"],
 		"noEmit": true,
 		"jsx": "react-jsx",

@@ -9,34 +9,15 @@
 		"Emoogle",
 		"Shadcn"
 	],
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/xitanggg/emoogle-emoji-picker.git"
-	},
 	"license": "MIT",
 	"type": "module",
-	"main": "./dist/index.js",
-	"files": [
-		"dist"
-	],
-	"exports": {
-		"./package.json": "./package.json",
-		".": {
-			"import": "./dist/index.js"
-		},
-		"./dist/index.css": {
-			"import": "./dist/index.css"
-		}
-	},
 	"scripts": {
-		"build": "tsup",
+		"lint": "tsc",
 		"dev": "vite",
+		"build": "vite build",
+		"start": "vite preview --port 3000",
 		"format": "prettier --write .",
 		"check-format": "prettier --check .",
-		"lint": "tsc",
-		"ci": "npm run build && npm run check-format && npm run lint",
-		"local-release": "changeset version && changeset publish",
-		"prepublishOnly": "npm run ci",
 		"create-data": "tsx scripts/create-data"
 	},
 	"devDependencies": {
@@ -50,11 +31,11 @@
 		"json-stringify-pretty-compact": "^4.0.0",
 		"postcss": "^8.4.47",
 		"prettier": "^3.3.3",
+		"prettier-plugin-organize-imports": "^4.1.0",
+		"prettier-plugin-tailwindcss": "^0.6.11",
 		"react": "^18.3.1",
 		"react-dom": "^18.3.1",
-		"tailwind-scrollbar": "^3.1.0",
 		"tailwindcss": "^3.4.14",
-		"tsup": "^8.3.5",
 		"tsx": "^4.19.2",
 		"typescript": "^5.6.3",
 		"vite": "^5.4.10",

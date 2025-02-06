@@ -19,7 +19,7 @@ export interface EmojiPickerProps {
 }
 
 interface InternalState {
-	scrollPaneElement: HTMLDivElement | null;
+	scrollPanelElement: HTMLDivElement | null;
 	searchInput: string;
 	searchEmojisResults: string[];
 	selectedGroup: Group;
@@ -39,7 +39,7 @@ const MAX_ITEMS = {
 } as const;
 
 const DEFAULT_STATE: InternalState = {
-	scrollPaneElement: null,
+	scrollPanelElement: null,
 	searchInput: '',
 	searchEmojisResults: [],
 	selectedGroup: CustomGroup.FrequentlyUsed,
@@ -73,7 +73,7 @@ const updateKeywordList = (
 });
 
 interface StoreActions {
-	setScrollPaneElement: (element: HTMLDivElement | null) => void;
+	setScrollPanelElement: (element: HTMLDivElement | null) => void;
 	setSearchInput: (input: string) => void;
 	setSelectedGroup: (group: Group) => void;
 	setSelectedEmoji: (emoji: SelectedEmoji | undefined) => void;
@@ -97,7 +97,7 @@ export const createEmojiPickerStore = (props: EmojiPickerProps) => {
 				...DEFAULT_STATE,
 				...props,
 
-				setScrollPaneElement: (element) => set({ scrollPaneElement: element }),
+				setScrollPanelElement: (element) => set({ scrollPanelElement: element }),
 				setSearchInput: (input) => set({ searchInput: input }),
 				setSelectedGroup: (group) => set({ selectedGroup: group }),
 				setSelectedEmoji: (emoji) => set({ selectedEmoji: emoji }),

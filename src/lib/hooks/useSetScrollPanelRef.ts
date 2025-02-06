@@ -9,22 +9,22 @@ import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area';
  * - EmojiButton: to auto scroll to selected emoji
  */
 export interface ScrollRefs {
-	scrollPaneRef: React.RefObject<HTMLDivElement>;
+	scrollPanelRef: React.RefObject<HTMLDivElement>;
 	viewportRef: React.RefObject<React.ElementRef<typeof ScrollAreaPrimitive.Viewport>>;
 }
 
-export const useSetScrollPaneRef = (): ScrollRefs => {
-	const scrollPaneRef = useRef<HTMLDivElement>(null);
+export const useSetScrollPanelRef = (): ScrollRefs => {
+	const scrollPanelRef = useRef<HTMLDivElement>(null);
 	const viewportRef = useRef<React.ElementRef<typeof ScrollAreaPrimitive.Viewport>>(null);
 
 	const { setEmojiPickerStore } = useEmojiPickerStore();
 
 	useEffect(() => {
-		setEmojiPickerStore({ scrollPaneElement: scrollPaneRef.current });
+		setEmojiPickerStore({ scrollPanelElement: scrollPanelRef.current });
 	}, []);
 
 	return {
-		scrollPaneRef,
+		scrollPanelRef,
 		viewportRef
 	};
 };
